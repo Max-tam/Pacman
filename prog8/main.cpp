@@ -16,6 +16,16 @@ using namespace std;
 using namespace nsGraphics;
 using namespace nsShape;
 
+void pacman(const unsigned & posX,const unsigned & posY, MinGL &window) // affiche un pacman au coordonnée donnée
+{
+    window << Circle(Vec2D(posX,posY), 20, KYellow); //( coordonée (largeur,hauteur) , radius )
+    window << Circle(Vec2D(posX,posY-10), 2, KBlack);
+    window << Triangle(Vec2D(posX,posY), Vec2D(posX+15,posY-14), Vec2D(posX+20,posY-7), KBlack); // (coordonée centre pacman ,point supérieur, point inférieur droit)
+    window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY-7), Vec2D(posX+22,posY), KBlack);
+    window << Triangle(Vec2D(posX,posY), Vec2D(posX+22,posY), Vec2D(posX+20,posY+7), KBlack);
+    window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY+7), Vec2D(posX+15,posY+14), KBlack);
+}
+
 void dessiner(MinGL &window)
 {
     // Pour dessiner quelque chose avec minGL 2, vous pouvez soit instancier l'objet dans une variable et l'injecter dans la fenêtre...
@@ -51,8 +61,13 @@ void dessiner(MinGL &window)
     window << Triangle(Vec2D(300,300), Vec2D(322,300), Vec2D(320,307), KBlack);
     window << Triangle(Vec2D(300,300), Vec2D(320,307), Vec2D(315,314), KBlack);
 
+    //test fonction pacman
+
+    pacman(450,200,window);
+
     // N'hésitez pas a lire la doc pour plus de détails.
 }
+
 
 void initVect (vector<unsigned> & V, const size_t & _size, const unsigned & min, const unsigned & max)
 {
@@ -77,6 +92,7 @@ void histogrammeVector (const vector <T> & V, MinGL & window)
         triedV.erase(max_element(triedV.begin(), triedV.end()));
     }
 }
+
 
 //int exo2()
 //{
