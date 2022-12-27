@@ -46,10 +46,10 @@ void dessiner(MinGL &window)
 
     window << Circle(Vec2D(300,300), 20, KYellow); //( coordonée (largeur,hauteur) , radius )
     window << Circle(Vec2D(300,290), 2, KBlack);
-    window << Triangle(Vec2D(300,300), Vec2D(315,286), Vec2D(322,300), KBlack); // (coordonée centre pacman ,point supérieur, point inférieur droit)
-    //window << Triangle(Vec2D(300,300), Vec2D(443,250), Vec2D(450,300), KBlack);
-    //window << Triangle(Vec2D(300,300), Vec2D(443,350), Vec2D(450,300), KBlack);
-    window << Triangle(Vec2D(300,300), Vec2D(315,316), Vec2D(322,300), KBlack);
+    window << Triangle(Vec2D(300,300), Vec2D(315,286), Vec2D(320,293), KBlack); // (coordonée centre pacman ,point supérieur, point inférieur droit)
+    window << Triangle(Vec2D(300,300), Vec2D(320,293), Vec2D(322,300), KBlack);
+    window << Triangle(Vec2D(300,300), Vec2D(322,300), Vec2D(320,307), KBlack);
+    window << Triangle(Vec2D(300,300), Vec2D(320,307), Vec2D(315,314), KBlack);
 
     // N'hésitez pas a lire la doc pour plus de détails.
 }
