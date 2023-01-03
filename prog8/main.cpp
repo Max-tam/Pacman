@@ -18,38 +18,42 @@ using namespace nsShape;
 
 Vec2D PacmanPos;
 
-void pacman(const unsigned & posX,const unsigned & posY, MinGL &window) // affiche un pacman au coordonnée donnée
+void pacman(const unsigned & posX,const unsigned & posY, MinGL &window,bool boucheOuverte) // affiche un pacman au coordonnée donnée
 {
-    window << Circle(Vec2D(posX,posY), 20, KYellow); //( coordonée (centre pacman sur X, centre parcman sur Y) , radius )
-    window << Circle(Vec2D(posX,posY-10), 2, KBlack);
-    window << Triangle(Vec2D(posX,posY), Vec2D(posX+15,posY-14), Vec2D(posX+20,posY-7), KBlack); // (coordonée centre pacman ,point supérieur droit, point inférieur droit)
-    window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY-7), Vec2D(posX+22,posY), KBlack);
-    window << Triangle(Vec2D(posX,posY), Vec2D(posX+22,posY), Vec2D(posX+20,posY+7), KBlack);
-    window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY+7), Vec2D(posX+15,posY+14), KBlack);
+
+    if (boucheOuverte)
+    {
+        window << Circle(Vec2D(posX,posY), 20, KYellow); //( coordonée (centre pacman sur X, centre parcman sur Y) , radius )
+        window << Circle(Vec2D(posX,posY-10), 2, KBlack);
+        window << Triangle(Vec2D(posX,posY), Vec2D(posX+15,posY-14), Vec2D(posX+20,posY-7), KBlack); // (coordonée centre pacman ,point supérieur droit, point inférieur droit)
+        window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY-7), Vec2D(posX+22,posY), KBlack);
+        window << Triangle(Vec2D(posX,posY), Vec2D(posX+22,posY), Vec2D(posX+20,posY+7), KBlack);
+        window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY+7), Vec2D(posX+15,posY+14), KBlack);
+    }
+    else
+    {
+        window << Circle(Vec2D(posX,posY), 20, KYellow); //( coordonée (centre pacman sur X, centre parcman sur Y) , radius )
+        window << Circle(Vec2D(posX,posY-10), 2, KBlack);
+    }
 }
 
-void dessiner(MinGL &window)
+void dessiner(MinGL &window, bool boucheOuverte)
 {
-
     //positionnement pacman
-
-    pacman(PacmanPos.getX(),PacmanPos.getY(),window);
-
-
-    // N'hésitez pas a lire la doc pour plus de détails.
+    pacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte);
 }
 
 void clavier(MinGL & window)
 {
     // On vérifie si ZQSD est pressé, et met a jour la position
     if (window.isPressed({'z', false}))
-        PacmanPos.setY(PacmanPos.getY() - 1);
+        PacmanPos.setY(PacmanPos.getY() - 2);
     if (window.isPressed({'s', false}))
-        PacmanPos.setY(PacmanPos.getY() + 1);
+        PacmanPos.setY(PacmanPos.getY() + 2);
     if (window.isPressed({'q', false}))
-        PacmanPos.setX(PacmanPos.getX() - 1);
+        PacmanPos.setX(PacmanPos.getX() - 2);
     if (window.isPressed({'d', false}))
-        PacmanPos.setX(PacmanPos.getX() + 1);
+        PacmanPos.setX(PacmanPos.getX() + 2);
 }
 
 int main()
@@ -58,6 +62,14 @@ int main()
     MinGL window("SAE 1.02", Vec2D(1280, 720), Vec2D(128, 128), KBlack);
     window.initGlut();
     window.initGraphic();
+
+    //Initialise la position du pacman
+    PacmanPos.setX(50);
+    PacmanPos.setY(50);
+
+    //Initialise la bouche du pacman à true
+    bool boucheOuverte = false;
+    unsigned frame = 0;
 
     // Variable qui tient le temps de frame
     chrono::microseconds frameTime = chrono::microseconds::zero();
@@ -73,7 +85,10 @@ int main()
 
         // On execute les processus
         clavier(window);
-        dessiner(window);
+        dessiner(window,boucheOuverte);
+        if (frame%10 == 0)
+            boucheOuverte = !boucheOuverte;
+        ++frame;
 
         // On finit la frame en cours
         window.finishFrame();
