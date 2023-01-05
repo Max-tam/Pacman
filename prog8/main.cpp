@@ -1,4 +1,3 @@
-#include "mingl/gui/sprite.h"
 #define FPS_LIMIT 60
 
 #include <iostream>
@@ -8,98 +7,13 @@
 
 #include "mingl/mingl.h"
 
-#include "mingl/shape/circle.h"
-#include "mingl/shape/triangle.h"
+#include "En-têtes/pacman.h"
 
 using namespace std;
 using namespace nsGraphics;
-using namespace nsShape;
 
 Vec2D PacmanPos;
 
-void pacman(const unsigned & posX,const unsigned & posY, MinGL &window,bool boucheOuverte, string & direction) // affiche un pacman au coordonnée donnée
-{
-    // Si pacman va vers la droite
-    if (direction == "droite")
-    {
-        //si pacman a la bouche ouverte
-        if (boucheOuverte)
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX+15,posY-14), Vec2D(posX+20,posY-7), KBlack); // partie de bouche 1
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY-7), Vec2D(posX+22,posY), KBlack); // partie de bouche 2
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX+22,posY), Vec2D(posX+20,posY+7), KBlack); // partie de bouche 3
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY+7), Vec2D(posX+15,posY+14), KBlack); // partie de bouche 4
-        }
-        //si pacman à la bouche fermée
-        else
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
-        }
-    }
-    // si pacman va vers la gauche
-    else if (direction == "gauche")
-    {
-        // si pacman a la bouche ouverte
-        if (boucheOuverte)
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-15,posY-14), Vec2D(posX-20,posY-7), KBlack); // partie de bouche 1
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-20,posY-7), Vec2D(posX-22,posY), KBlack); // partie de bouche 2
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-22,posY), Vec2D(posX-20,posY+7), KBlack); // partie de bouche 3
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-20,posY+7), Vec2D(posX-15,posY+14), KBlack); // partie de bouche 4
-        }
-        // si pacman a la bouche fermée
-        else
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
-        }
-    }
-    // si pacman va vers le bas
-    else if (direction == "bas")
-    {
-        // si pacman a la bouche ouverte
-        if (boucheOuverte)
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX+10,posY), 2, KBlack); // oeil du pacman
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-14,posY+15), Vec2D(posX-7,posY+20), KBlack); // partie de bouche 1
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-7,posY+20), Vec2D(posX,posY+22), KBlack); // partie de bouche 2
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX,posY+22), Vec2D(posX+7,posY+20), KBlack); // partie de bouche 3
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX+7,posY+20), Vec2D(posX+14,posY+15), KBlack); // partie de bouche 4
-        }
-        // si pacman a la bouche fermée
-        else
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX+10,posY), 2, KBlack); // oeil du pacman
-        }
-    }
-    // si pacman va vers le haut
-    else if (direction == "haut")
-    {
-        // si pacman a la bouche ouverte
-        if (boucheOuverte)
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX-10,posY), 2, KBlack); // oeil du pacman
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-14,posY-15), Vec2D(posX-7,posY-20), KBlack); // partie de bouche 1
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX-7,posY-20), Vec2D(posX,posY-22), KBlack); // partie de bouche 2
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX,posY-22), Vec2D(posX+7,posY-20), KBlack); // partie de bouche 3
-            window << Triangle(Vec2D(posX,posY), Vec2D(posX+7,posY-20), Vec2D(posX+14,posY-15), KBlack); // partie de bouche 4
-        }
-        // si pacman a la bouche fermée
-        else
-        {
-            window << Circle(Vec2D(posX,posY), 20, KYellow); // corp du pacman
-            window << Circle(Vec2D(posX-10,posY), 2, KBlack); // oeil du pacman
-        }
-    }
-}
 
 //void dessiner(MinGL &window, bool boucheOuverte)
 //{
@@ -111,33 +25,33 @@ void clavier(MinGL & window, string & direction)
     // On vérifie si ZQSD est pressé, et met a jour la position et la direction
     if (window.isPressed({'z', false}))
     {
-        PacmanPos.setY(PacmanPos.getY() - 5);
+        PacmanPos.setY(PacmanPos.getY() - 2);
         direction = "haut";
     }
     else if (window.isPressed({'s', false}))
     {
-        PacmanPos.setY(PacmanPos.getY() + 5);
+        PacmanPos.setY(PacmanPos.getY() + 2);
         direction = "bas";
     }
     else if (window.isPressed({'q', false}))
     {
-        PacmanPos.setX(PacmanPos.getX() - 5);
+        PacmanPos.setX(PacmanPos.getX() - 2);
         direction = "gauche";
     }
     else if (window.isPressed({'d', false}))
     {
-        PacmanPos.setX(PacmanPos.getX() + 5);
+        PacmanPos.setX(PacmanPos.getX() + 2);
         direction = "droite";
     }
     // si pas de touche pressé on continue à aller dans la même direction
     else if (direction == "haut")
-        PacmanPos.setY(PacmanPos.getY() - 5);
+        PacmanPos.setY(PacmanPos.getY() - 2);
     else if (direction == "bas")
-        PacmanPos.setY(PacmanPos.getY() + 5);
+        PacmanPos.setY(PacmanPos.getY() + 2);
     else if (direction == "gauche")
-        PacmanPos.setX(PacmanPos.getX() - 5);
+        PacmanPos.setX(PacmanPos.getX() - 2);
     else if (direction == "droite")
-        PacmanPos.setX(PacmanPos.getX() + 5);
+        PacmanPos.setX(PacmanPos.getX() + 2);
 }
 
 int main()
@@ -172,17 +86,15 @@ int main()
 
         // On execute les processus
 
-        //positionnement pacman
-
         clavier(window,direction);
 
-        pacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction);
-        if (frame%5 == 0)
+        affichePacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction);
+        if (frame%15 == 0)
             boucheOuverte = !boucheOuverte;
         ++frame;
 
-        nsGui::Sprite doggo("../prog8/pac.si2",Vec2D(0,0));
-        window << doggo;
+//        nsGui::Sprite doggo("../prog8/pac.si2",Vec2D(0,0));
+//        window << doggo;
 
         // On finit la frame en cours
         window.finishFrame();
