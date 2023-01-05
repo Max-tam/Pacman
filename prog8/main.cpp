@@ -37,22 +37,21 @@ void pacman(const unsigned & posX,const unsigned & posY, MinGL &window,bool bouc
     }
 }
 
-void dessiner(MinGL &window, bool boucheOuverte)
-{
-    //positionnement pacman
-    pacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte);
-}
+//void dessiner(MinGL &window, bool boucheOuverte)
+//{
+
+//}
 
 void clavier(MinGL & window)
 {
     // On vérifie si ZQSD est pressé, et met a jour la position
     if (window.isPressed({'z', false}))
         PacmanPos.setY(PacmanPos.getY() - 2);
-    if (window.isPressed({'s', false}))
+    else if (window.isPressed({'s', false}))
         PacmanPos.setY(PacmanPos.getY() + 2);
-    if (window.isPressed({'q', false}))
+    else if (window.isPressed({'q', false}))
         PacmanPos.setX(PacmanPos.getX() - 2);
-    if (window.isPressed({'d', false}))
+    else if (window.isPressed({'d', false}))
         PacmanPos.setX(PacmanPos.getX() + 2);
 }
 
@@ -85,7 +84,9 @@ int main()
 
         // On execute les processus
         clavier(window);
-        dessiner(window,boucheOuverte);
+
+        //positionnement pacman
+        pacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte);
         if (frame%10 == 0)
             boucheOuverte = !boucheOuverte;
         ++frame;
