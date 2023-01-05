@@ -1,3 +1,4 @@
+#include "mingl/shape/circle.h"
 #define FPS_LIMIT 60
 
 //bibliotheque c++
@@ -23,15 +24,15 @@ Vec2D PacmanPos;
 
 void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
-    matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , 0 : chemin, - : porte fantome
+    matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , 0 : chemin avec pièce, - : porte fantome, ' ' : chemin sans pièce
                   {'X','0','0','0','0','0','0','X','0','0','0','0','0','0','X',},
                   {'X','0','X','0','X','X','0','X','0','X','X','0','X','0','X',},
                   {'X','0','0','0','0','0','0','0','0','0','0','0','0','0','X',},
                   {'X','0','X','X','X','X','X','0','X','X','X','X','X','0','X',},
                   {'X','0','0','0','0','0','0','0','0','0','0','0','0','0','X',},
                   {'X','X','0','X','0','X','X','-','X','X','0','X','0','X','X',},
-                  {'0','0','0','X','0','X','0','0','0','X','0','X','0','0','0',}, //millieu
-                  {'X','0','X','X','0','X','0','0','0','X','0','X','X','0','X',},
+                  {'0','0','0','X','0','X',' ',' ',' ','X','0','X','0','0','0',}, //millieu
+                  {'X','0','X','X','0','X',' ',' ',' ','X','0','X','X','0','X',},
                   {'X','0','0','X','0','X','X','X','X','X','0','X','0','0','X',},
                   {'X','X','0','0','0','X','0','0','0','X','0','0','0','X','X',},
                   {'X','X','0','X','0','0','0','X','0','0','0','X','0','X','X',},
@@ -62,9 +63,14 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
             if (mat[i][j] == 'X')
                 window << Rectangle(Vec2D(j*50, i*50), Vec2D(j*50+50, i*50+50), KBlue);
             else if (mat[i][j] == '0')
+            {
                 window << Rectangle(Vec2D(j*50, i*50), Vec2D(j*50+50, i*50+50), KBlack);
+                window << Circle(Vec2D(j*50+25,i*50+25), 5, KYellow);
+            }
             else if (mat[i][j] == '-')
                 window << Rectangle(Vec2D(j*50, i*50), Vec2D(j*50+50, i*50+20), KPurple);
+            else if (mat[i][j] == ' ')
+                window << Rectangle(Vec2D(j*50, i*50), Vec2D(j*50+50, i*50+20), KBlack);
         }
     }
 }
