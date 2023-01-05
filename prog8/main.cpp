@@ -1,26 +1,63 @@
 #define FPS_LIMIT 60
 
+//bibliotheque c++
 #include <iostream>
 #include <thread>
 #include <vector>
 #include <algorithm>
 
+//Mingl 2
 #include "mingl/mingl.h"
 
+//En-tetes
 #include "En-têtes/pacman.h"
 
 using namespace std;
 using namespace nsGraphics;
+using namespace chrono;
+using namespace this_thread;
 
 Vec2D PacmanPos;
 
+void matriceInit(vector <vector <char>> & matriceMap)
+{
+    matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
+                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}};
+
+    cout << matriceMap[5][15] << endl;
+}
+
+void afficheMat(vector <vector< char>> & mat)
+{
+    for (unsigned i = 0; i < mat.size(); ++i)
+    {
+        for (unsigned j = 0; j < mat[i].size(); ++j)
+        {
+            cout << mat[i][j];
+        }
+        cout << endl;
+    }
+}
 
 //void dessiner(MinGL &window, bool boucheOuverte)
 //{
 
 //}
 
-void clavier(MinGL & window, string & direction)
+void clavier(MinGL & window, string & direction) /* source: Alain casali + Maxime TAMARIN*/
 {
     // On vérifie si ZQSD est pressé, et met a jour la position et la direction
     if (window.isPressed({'z', false}))
@@ -54,32 +91,45 @@ void clavier(MinGL & window, string & direction)
         PacmanPos.setX(PacmanPos.getX() + 2);
 }
 
-int main()
+int main()  /* source: Alain casali + Maxime TAMARIN*/
 {
     // Initialise le système
     MinGL window("SAE 1.02", Vec2D(750, 750), Vec2D(128, 128), KBlack);
     window.initGlut();
     window.initGraphic();
 
+
+
+//=====| Initialisation Map |=====
+
+    vector <vector <char>> map;
+    matriceInit(map);
+    afficheMat(map);
+
+//=====| Initialisation Pacman |=====
+
     //Initialise la position du pacman
     PacmanPos.setX(50);
     PacmanPos.setY(50);
 
-    //Initialise la bouche du pacman à true
-    bool boucheOuverte = false;
-    unsigned frame = 0;
+        //Initialise la bouche du pacman à false
+        bool boucheOuverte = false;
+//=====| Autre Initialisation |=====
 
     //Initialisation direction pacman
     string direction = "droite";
 
+    // frame = nombre d'execution (comme 60FPS alors 60 execution / seconde)
+    unsigned frame = 0;
+
     // Variable qui tient le temps de frame
-    chrono::microseconds frameTime = chrono::microseconds::zero();
+    microseconds frameTime = microseconds::zero();
 
     // On fait tourner la boucle tant que la fenêtre est ouverte
     while (window.isOpen())
     {
         // Récupère l'heure actuelle
-        chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
+        time_point<steady_clock> start = steady_clock::now();
 
         // On efface la fenêtre
         window.clearScreen();
@@ -89,7 +139,7 @@ int main()
         clavier(window,direction);
 
         affichePacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction);
-        if (frame%15 == 0)
+        if (frame%15 == 0) // toute les 15 execution (1/4 de seconde) on change l'état de la bouche
             boucheOuverte = !boucheOuverte;
         ++frame;
 
@@ -103,10 +153,10 @@ int main()
         window.getEventManager().clearEvents();
 
         // On attend un peu pour limiter le framerate et soulager le CPU
-        this_thread::sleep_for(chrono::milliseconds(1000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start));
+        sleep_for(milliseconds(1000 / FPS_LIMIT) - duration_cast<microseconds>(steady_clock::now() - start));
 
         // On récupère le temps de frame
-        frameTime = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start);
+        frameTime = duration_cast<microseconds>(steady_clock::now() - start);
     }
 
     return 0;
