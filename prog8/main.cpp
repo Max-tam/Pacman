@@ -75,38 +75,53 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
     }
 }
 
-void clavier(MinGL & window, string & direction) /* source: Alain casali + Maxime TAMARIN*/
+void deplacementPacman(MinGL & window, string & direction,vector <vector <char>> & mat) /* source: Alain casali + Maxime TAMARIN*/
 {
     // On vérifie si ZQSD est pressé, et met a jour la position et la direction
-    if (window.isPressed({'z', false}))
+    if (window.isPressed({'z', false}) && ( mat[(PacmanPos.getY()/50)-1][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)-1][PacmanPos.getX()/50] != '-')) // regarde si prochaine case n'est pas interdite
     {
-        PacmanPos.setY(PacmanPos.getY() - 2);
         direction = "haut";
-    }
-    else if (window.isPressed({'s', false}))
-    {
-        PacmanPos.setY(PacmanPos.getY() + 2);
-        direction = "bas";
-    }
-    else if (window.isPressed({'q', false}))
-    {
-        PacmanPos.setX(PacmanPos.getX() - 2);
-        direction = "gauche";
-    }
-    else if (window.isPressed({'d', false}))
-    {
-        PacmanPos.setX(PacmanPos.getX() + 2);
-        direction = "droite";
-    }
-    // si pas de touche pressé on continue à aller dans la même direction
-    else if (direction == "haut")
         PacmanPos.setY(PacmanPos.getY() - 2);
-    else if (direction == "bas")
+    }
+    else if (window.isPressed({'s', false}) && ( mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != '-'))
+    {
+        direction = "bas";
         PacmanPos.setY(PacmanPos.getY() + 2);
-    else if (direction == "gauche")
+    }
+    else if (window.isPressed({'q', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != '-'))
+    {
+        direction = "gauche";
         PacmanPos.setX(PacmanPos.getX() - 2);
-    else if (direction == "droite")
+    }
+    else if (window.isPressed({'d', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != '-'))
+    {
+        direction = "droite";
         PacmanPos.setX(PacmanPos.getX() + 2);
+    }
+
+    // si pas de touche pressé on continue à aller dans la même direction
+    else if (direction == "haut" && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)-1][PacmanPos.getX()/50] != '-'))
+    {
+        mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
+        PacmanPos.setY(PacmanPos.getY() - 2);
+    }
+    else if (direction == "bas" && ( mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != '-'))
+    {
+        mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
+        PacmanPos.setY(PacmanPos.getY() + 2);
+    }
+    else if (direction == "gauche" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != '-'))
+    {
+        mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
+        PacmanPos.setX(PacmanPos.getX() - 2);
+    }
+    else if (direction == "droite" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != '-'))
+    {
+        mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
+        PacmanPos.setX(PacmanPos.getX() + 2);
+    }
+    else
+        direction = "immobile";
 }
 
 int main()  /* source: Alain casali + Maxime TAMARIN*/
@@ -122,12 +137,11 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
     matriceInit(map);
     afficheMat(map);
 
-
 //=====| Initialisation Pacman |=====
 
     //Initialise la position du pacman
-    PacmanPos.setX(50);
-    PacmanPos.setY(50);
+    PacmanPos.setX(75);
+    PacmanPos.setY(75);
 
         //Initialise la bouche du pacman à false
         bool boucheOuverte = false;
@@ -158,12 +172,14 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
         afficheMap(window,map);
 
-        clavier(window,direction); //regarde les touches appuyées et si la direction du pacman doit changer ou non
+        deplacementPacman(window,direction,map); //regarde les touches appuyées et si la direction du pacman doit changer ou non
 
         affichePacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction); // affiche pacman en fonction d'une position
         if (frame%15 == 0) // toute les 15 execution (1/4 de seconde) on change l'état de la bouche
             boucheOuverte = !boucheOuverte;
 
+        cout << "X: " << PacmanPos.getX() << " Y: " << PacmanPos.getY() << endl;
+        afficheMat(map);
 
         ++frame;
 
@@ -182,6 +198,5 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
         // On récupère le temps de frame
         frameTime = duration_cast<microseconds>(steady_clock::now() - start);
     }
-
     return 0;
 }
