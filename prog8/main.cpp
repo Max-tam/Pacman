@@ -8,39 +8,40 @@
 
 //Mingl 2
 #include "mingl/mingl.h"
+#include "mingl/shape/rectangle.h"
 
 //En-tetes
 #include "En-têtes/pacman.h"
 
 using namespace std;
 using namespace nsGraphics;
+using namespace nsShape;
 using namespace chrono;
 using namespace this_thread;
 
 Vec2D PacmanPos;
 
-void matriceInit(vector <vector <char>> & matriceMap)
+void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
-    matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',},
-                 {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}};
+    matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , 0 : chemin, - : porte fantome
+                  {'X','0','0','0','0','0','0','X','0','0','0','0','0','0','X',},
+                  {'X','0','X','0','X','X','0','X','0','X','X','0','X','0','X',},
+                  {'X','0','0','0','0','0','0','0','0','0','0','0','0','0','X',},
+                  {'X','0','X','X','X','X','X','0','X','X','X','X','X','0','X',},
+                  {'X','0','0','0','0','0','0','0','0','0','0','0','0','0','X',},
+                  {'X','X','0','X','0','X','X','-','X','X','0','X','0','X','X',},
+                  {'0','0','0','X','0','X','0','0','0','X','0','X','0','0','0',}, //millieu
+                  {'X','0','X','X','0','X','0','0','0','X','0','X','X','0','X',},
+                  {'X','0','0','X','0','X','X','X','X','X','0','X','0','0','X',},
+                  {'X','X','0','0','0','X','0','0','0','X','0','0','0','X','X',},
+                  {'X','X','0','X','0','0','0','X','0','0','0','X','0','X','X',},
+                  {'X','X','0','X','X','X','0','X','0','X','X','X','0','X','X',},
+                  {'X','X','0','0','0','0','0','0','0','0','0','0','0','X','X',},
+                  {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}};
 
-    cout << matriceMap[5][15] << endl;
 }
 
-void afficheMat(vector <vector< char>> & mat)
+void afficheMat(vector <vector< char>> & mat) /*source: Maxime TAMARIN*/
 {
     for (unsigned i = 0; i < mat.size(); ++i)
     {
@@ -52,10 +53,21 @@ void afficheMat(vector <vector< char>> & mat)
     }
 }
 
-//void dessiner(MinGL &window, bool boucheOuverte)
-//{
-
-//}
+void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TAMARIN*/
+{
+    for (unsigned i = 0; i < mat.size(); ++i)
+    {
+        for (unsigned j = 0; j < mat[i].size(); ++j)
+        {
+            if (mat[i][j] == 'X')
+                window << Rectangle(Vec2D(j*50, i*50), Vec2D(j*50+50, i*50+50), KBlue);
+            else if (mat[i][j] == '0')
+                window << Rectangle(Vec2D(j*50, i*50), Vec2D(j*50+50, i*50+50), KBlack);
+            else if (mat[i][j] == '-')
+                window << Rectangle(Vec2D(j*50, i*50), Vec2D(j*50+50, i*50+20), KPurple);
+        }
+    }
+}
 
 void clavier(MinGL & window, string & direction) /* source: Alain casali + Maxime TAMARIN*/
 {
@@ -98,13 +110,12 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
     window.initGlut();
     window.initGraphic();
 
-
-
 //=====| Initialisation Map |=====
 
     vector <vector <char>> map;
     matriceInit(map);
     afficheMat(map);
+
 
 //=====| Initialisation Pacman |=====
 
@@ -114,6 +125,7 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
         //Initialise la bouche du pacman à false
         bool boucheOuverte = false;
+
 //=====| Autre Initialisation |=====
 
     //Initialisation direction pacman
@@ -124,6 +136,8 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
     // Variable qui tient le temps de frame
     microseconds frameTime = microseconds::zero();
+
+//=====| Boucle infini de la fenêtre |=====
 
     // On fait tourner la boucle tant que la fenêtre est ouverte
     while (window.isOpen())
@@ -136,11 +150,15 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
         // On execute les processus
 
-        clavier(window,direction);
+        afficheMap(window,map);
 
-        affichePacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction);
+        clavier(window,direction); //regarde les touches appuyées et si la direction du pacman doit changer ou non
+
+        affichePacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction); // affiche pacman en fonction d'une position
         if (frame%15 == 0) // toute les 15 execution (1/4 de seconde) on change l'état de la bouche
             boucheOuverte = !boucheOuverte;
+
+
         ++frame;
 
 //        nsGui::Sprite doggo("../prog8/pac.si2",Vec2D(0,0));
