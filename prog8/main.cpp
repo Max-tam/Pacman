@@ -78,50 +78,48 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
 void deplacementPacman(MinGL & window, string & direction,vector <vector <char>> & mat) /* source: Alain casali + Maxime TAMARIN*/
 {
     // On vérifie si ZQSD est pressé, et met a jour la position et la direction
-    if (window.isPressed({'z', false}) && ( mat[(PacmanPos.getY()/50)-1][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)-1][PacmanPos.getX()/50] != '-')) // regarde si prochaine case n'est pas interdite
+    if (window.isPressed({'z', false}) && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' ')) // regarde si prochaine case n'est pas interdite
     {
         direction = "haut";
         PacmanPos.setY(PacmanPos.getY() - 2);
     }
-    else if (window.isPressed({'s', false}) && ( mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != '-'))
+    else if (window.isPressed({'s', false}) && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' '))
     {
         direction = "bas";
         PacmanPos.setY(PacmanPos.getY() + 2);
     }
-    else if (window.isPressed({'q', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != '-'))
+    else if (window.isPressed({'q', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' '))
     {
         direction = "gauche";
         PacmanPos.setX(PacmanPos.getX() - 2);
     }
-    else if (window.isPressed({'d', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != '-'))
+    else if (window.isPressed({'d', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0' || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' '))
     {
         direction = "droite";
         PacmanPos.setX(PacmanPos.getX() + 2);
     }
 
     // si pas de touche pressé on continue à aller dans la même direction
-    else if (direction == "haut" && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)-1][PacmanPos.getX()/50] != '-'))
+    else if (direction == "haut" && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' '))
     {
         mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
         PacmanPos.setY(PacmanPos.getY() - 2);
     }
-    else if (direction == "bas" && ( mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != 'X'  || mat[(PacmanPos.getY()/50)+1][PacmanPos.getX()/50] != '-'))
+    else if (direction == "bas" && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' '))
     {
         mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
         PacmanPos.setY(PacmanPos.getY() + 2);
     }
-    else if (direction == "gauche" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)-1] != '-'))
+    else if (direction == "gauche" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' '))
     {
         mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
         PacmanPos.setX(PacmanPos.getX() - 2);
     }
-    else if (direction == "droite" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != 'X'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)+1] != '-'))
+    else if (direction == "droite" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0' || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' ' ||  mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '.' ))
     {
         mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
         PacmanPos.setX(PacmanPos.getX() + 2);
     }
-    else
-        direction = "immobile";
 }
 
 int main()  /* source: Alain casali + Maxime TAMARIN*/
