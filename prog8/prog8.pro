@@ -16,3 +16,8 @@ HEADERS += \
     En-têtes/pacman.h \
     En-têtes/params.h \
     En-têtes/type.h
+
+DISTFILES += \
+    autre fichier/config.yaml \
+    autre fichier/config.yaml \
+    autre fichier/config.yaml
