@@ -6,8 +6,6 @@
 #include "En-têtes/params.h"
 #include "En-têtes/type.h"
 
-//cree le docier si il le faut (game.h)
-
 using namespace std;
 
 
@@ -20,14 +18,28 @@ Param.MapParamChar["KeyLeft"] = 'q';
 Param.MapParamChar["KeyRight"] = 'd';
 
 //Display Colors
-Param.MapParamColorString["Colorfond1"] = KColor.find("KRed")->second ;
-Param.MapParamColorString["Colorfond2"] = KColor.find("KCyan")->second ;
+Param.MapParamColorString["ColorChemin"] = KColor.find("KBlack")->second ;
+Param.MapParamColorString["ColorMur"] = KColor.find("KBlue")->second ;
+Param.MapParamColorString["ColorPorte"] = KColor.find("KPurple")->second ;
+Param.MapParamColorString["ColorPiece"] = KColor.find("KYellow")->second ;
+Param.MapParamColorString["ColorPacmanEnerve"] = KColor.find("KRed")->second ;
+Param.MapParamColorString["ColorPacman"] = KColor.find("KYellow")->second ;
 
+// Consommable
+Param.MapParamConsommableChar["pièce"] = '0';
+Param.MapParamConsommableChar["vide"] = ' ';
+Param.MapParamConsommableChar["pouvoir"] = '*';
+Param.MapParamConsommableChar["pouvoir"] = '.';
+
+//collision
+Param.MapParamCollisionChar["mur"] = 'X';
+Param.MapParamCollisionChar["porte"] = '-';
+//LoadParams(Param); // on verifie si dans le fichier des informations ne sont pas différente
 }
 
 void loadparam (CMyParam & Param) /*Sources Gavril / Prof correction prog13*/
 {
-    ifstream ifs("../prog8/Nos_fichiers/config.yaml");
+    ifstream ifs("../prog8/autre fichier/config.yaml");
     if (!ifs)
     {
         cerr << "le fichier de configuration est pas ouvert" << endl ;
