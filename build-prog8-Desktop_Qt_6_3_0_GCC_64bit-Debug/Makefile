@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = prog81.0.0
-DISTDIR = /home/maxtam/Documents/S1/S1.02/ProjetPacman/build-prog8-Desktop_Qt_6_3_0_GCC_64bit-Debug/.tmp/prog81.0.0
+DISTDIR = /home/maxtam/Documents/S1/S1.02/Pacman/build-prog8-Desktop_Qt_6_3_0_GCC_64bit-Debug/.tmp/prog81.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) -lglut -lsfml-audio -lGLU -lGL   
@@ -52,7 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../prog8/main.cpp \
+SOURCES       = ../prog8/Source/gridmanagement.cpp \
+		../prog8/Source/pacman.cpp \
+		../prog8/Source/params.cpp \
+		../prog8/main.cpp \
 		../prog8/MinGL2/src/audio/audioengine.cpp \
 		../prog8/MinGL2/src/exception/cexception.cpp \
 		../prog8/MinGL2/src/mingl.cpp \
@@ -70,7 +73,10 @@ SOURCES       = ../prog8/main.cpp \
 		../prog8/MinGL2/src/transition/transition.cpp \
 		../prog8/MinGL2/src/transition/transition_contract.cpp \
 		../prog8/MinGL2/src/transition/transition_engine.cpp 
-OBJECTS       = main.o \
+OBJECTS       = gridmanagement.o \
+		pacman.o \
+		params.o \
+		main.o \
 		audioengine.o \
 		cexception.o \
 		mingl.o \
@@ -211,7 +217,6 @@ DIST          = /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/spec_post.prf \
-		../prog8/.qmake.stash \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -226,33 +231,40 @@ DIST          = /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/exceptions.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/yacc.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/lex.prf \
-		../prog8/prog8.pro /home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/audio/audioengine.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/exception/cexception.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/exception/cexception.hpp \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/exception/errcode.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/macros.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/mingl.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/event/event.hpp \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/event/event_manager.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/shape/circle.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/shape/line.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/shape/rectangle.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/shape/triangle.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/shape/shape.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/graphics/idrawable.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/graphics/vec2d.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/gui/glut_font.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/gui/sprite.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/gui/text.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/tools/ieditable.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/tools/ieditable.hpp \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/tools/ifonctorunaire.hpp \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/transition/itransitionable.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/transition/transition.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/transition/transition_contract.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/transition/transition_engine.h \
-		/home/maxtam/Documents/S1/S1.02/ProjetPacman/prog8/MinGL2/include/mingl/transition/transition_types.h ../prog8/main.cpp \
+		../prog8/prog8.pro /home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/audio/audioengine.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/exception/cexception.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/exception/cexception.hpp \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/exception/errcode.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/macros.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/mingl.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/event/event.hpp \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/event/event_manager.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/shape/circle.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/shape/line.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/shape/rectangle.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/shape/triangle.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/shape/shape.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/gui/glut_font.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/gui/sprite.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/gui/text.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/tools/ieditable.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/tools/ifonctorunaire.hpp \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/transition/transition.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/transition/transition_contract.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/transition/transition_engine.h \
+		/home/maxtam/Documents/S1/S1.02/Pacman/prog8/MinGL2/include/mingl/transition/transition_types.h \
+		En-têtes/gridmanagement.h \
+		En-têtes/pacman.h \
+		En-têtes/params.h \
+		En-têtes/type.h ../prog8/Source/gridmanagement.cpp \
+		../prog8/Source/pacman.cpp \
+		../prog8/Source/params.cpp \
+		../prog8/main.cpp \
 		../prog8/MinGL2/src/audio/audioengine.cpp \
 		../prog8/MinGL2/src/exception/cexception.cpp \
 		../prog8/MinGL2/src/mingl.cpp \
@@ -404,7 +416,6 @@ Makefile: ../prog8/prog8.pro /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/linux-g++/qmak
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -544,7 +555,6 @@ Makefile: ../prog8/prog8.pro /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/linux-g++/qmak
 /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/qt_config.prf:
 /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/toolchain.prf:
 /home/maxtam/Qt/6.4.1/gcc_64/mkspecs/features/default_pre.prf:
@@ -603,49 +613,162 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../prog8/main.cpp ../prog8/MinGL2/include/mingl/mingl.h
+gridmanagement.o: ../prog8/Source/gridmanagement.cpp ../prog8/En-têtes/gridmanagement.h \
+		../prog8/En-têtes/type.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gridmanagement.o ../prog8/Source/gridmanagement.cpp
+
+pacman.o: ../prog8/Source/pacman.cpp ../prog8/MinGL2/include/mingl/mingl.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/event/event_manager.h \
+		../prog8/MinGL2/include/mingl/event/event.hpp \
+		../prog8/MinGL2/include/mingl/gui/sprite.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/shape/circle.h \
+		../prog8/MinGL2/include/mingl/shape/shape.h \
+		../prog8/MinGL2/include/mingl/shape/triangle.h \
+		../prog8/En-têtes/pacman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pacman.o ../prog8/Source/pacman.cpp
+
+params.o: ../prog8/Source/params.cpp ../prog8/En-têtes/params.h \
+		../prog8/En-têtes/type.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o params.o ../prog8/Source/params.cpp
+
+main.o: ../prog8/main.cpp ../prog8/MinGL2/include/mingl/mingl.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/event/event_manager.h \
+		../prog8/MinGL2/include/mingl/event/event.hpp \
+		../prog8/MinGL2/include/mingl/shape/circle.h \
+		../prog8/MinGL2/include/mingl/shape/shape.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/shape/rectangle.h \
+		../prog8/MinGL2/include/mingl/gui/sprite.h \
+		../prog8/En-têtes/pacman.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../prog8/main.cpp
 
-audioengine.o: ../prog8/MinGL2/src/audio/audioengine.cpp 
+audioengine.o: ../prog8/MinGL2/src/audio/audioengine.cpp ../prog8/MinGL2/include/mingl/audio/audioengine.h \
+		../prog8/MinGL2/include/mingl/exception/cexception.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/exception/errcode.h \
+		../prog8/MinGL2/include/mingl/exception/cexception.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o audioengine.o ../prog8/MinGL2/src/audio/audioengine.cpp
 
-cexception.o: ../prog8/MinGL2/src/exception/cexception.cpp 
+cexception.o: ../prog8/MinGL2/src/exception/cexception.cpp ../prog8/MinGL2/include/mingl/exception/cexception.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/exception/errcode.h \
+		../prog8/MinGL2/include/mingl/exception/cexception.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cexception.o ../prog8/MinGL2/src/exception/cexception.cpp
 
-mingl.o: ../prog8/MinGL2/src/mingl.cpp ../prog8/MinGL2/include/mingl/mingl.h
+mingl.o: ../prog8/MinGL2/src/mingl.cpp ../prog8/MinGL2/include/mingl/mingl.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/event/event_manager.h \
+		../prog8/MinGL2/include/mingl/event/event.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mingl.o ../prog8/MinGL2/src/mingl.cpp
 
-event_manager.o: ../prog8/MinGL2/src/event/event_manager.cpp 
+event_manager.o: ../prog8/MinGL2/src/event/event_manager.cpp ../prog8/MinGL2/include/mingl/event/event_manager.h \
+		../prog8/MinGL2/include/mingl/event/event.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o event_manager.o ../prog8/MinGL2/src/event/event_manager.cpp
 
-circle.o: ../prog8/MinGL2/src/shape/circle.cpp ../prog8/MinGL2/include/mingl/macros.h
+circle.o: ../prog8/MinGL2/src/shape/circle.cpp ../prog8/MinGL2/include/mingl/shape/circle.h \
+		../prog8/MinGL2/include/mingl/shape/shape.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/macros.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o circle.o ../prog8/MinGL2/src/shape/circle.cpp
 
-line.o: ../prog8/MinGL2/src/shape/line.cpp ../prog8/MinGL2/include/mingl/macros.h
+line.o: ../prog8/MinGL2/src/shape/line.cpp ../prog8/MinGL2/include/mingl/shape/line.h \
+		../prog8/MinGL2/include/mingl/shape/shape.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/macros.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o line.o ../prog8/MinGL2/src/shape/line.cpp
 
-rectangle.o: ../prog8/MinGL2/src/shape/rectangle.cpp ../prog8/MinGL2/include/mingl/macros.h
+rectangle.o: ../prog8/MinGL2/src/shape/rectangle.cpp ../prog8/MinGL2/include/mingl/shape/rectangle.h \
+		../prog8/MinGL2/include/mingl/shape/shape.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/macros.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rectangle.o ../prog8/MinGL2/src/shape/rectangle.cpp
 
-triangle.o: ../prog8/MinGL2/src/shape/triangle.cpp ../prog8/MinGL2/include/mingl/macros.h
+triangle.o: ../prog8/MinGL2/src/shape/triangle.cpp ../prog8/MinGL2/include/mingl/shape/triangle.h \
+		../prog8/MinGL2/include/mingl/shape/shape.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/macros.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o triangle.o ../prog8/MinGL2/src/shape/triangle.cpp
 
-shape.o: ../prog8/MinGL2/src/shape/shape.cpp 
+shape.o: ../prog8/MinGL2/src/shape/shape.cpp ../prog8/MinGL2/include/mingl/shape/shape.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shape.o ../prog8/MinGL2/src/shape/shape.cpp
 
-rgbacolor.o: ../prog8/MinGL2/src/graphics/rgbacolor.cpp 
+rgbacolor.o: ../prog8/MinGL2/src/graphics/rgbacolor.cpp ../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rgbacolor.o ../prog8/MinGL2/src/graphics/rgbacolor.cpp
 
-vec2d.o: ../prog8/MinGL2/src/graphics/vec2d.cpp 
+vec2d.o: ../prog8/MinGL2/src/graphics/vec2d.cpp ../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o vec2d.o ../prog8/MinGL2/src/graphics/vec2d.cpp
 
-glut_font.o: ../prog8/MinGL2/src/gui/glut_font.cpp 
+glut_font.o: ../prog8/MinGL2/src/gui/glut_font.cpp ../prog8/MinGL2/include/mingl/gui/glut_font.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glut_font.o ../prog8/MinGL2/src/gui/glut_font.cpp
 
-sprite.o: ../prog8/MinGL2/src/gui/sprite.cpp ../prog8/MinGL2/include/mingl/macros.h
+sprite.o: ../prog8/MinGL2/src/gui/sprite.cpp ../prog8/MinGL2/include/mingl/gui/sprite.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/macros.h \
+		../prog8/MinGL2/include/mingl/exception/cexception.h \
+		../prog8/MinGL2/include/mingl/exception/errcode.h \
+		../prog8/MinGL2/include/mingl/exception/cexception.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sprite.o ../prog8/MinGL2/src/gui/sprite.cpp
 
-text.o: ../prog8/MinGL2/src/gui/text.cpp ../prog8/MinGL2/include/mingl/macros.h
+text.o: ../prog8/MinGL2/src/gui/text.cpp ../prog8/MinGL2/include/mingl/gui/text.h \
+		../prog8/MinGL2/include/mingl/gui/glut_font.h \
+		../prog8/MinGL2/include/mingl/graphics/idrawable.h \
+		../prog8/MinGL2/include/mingl/graphics/rgbacolor.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.h \
+		../prog8/MinGL2/include/mingl/tools/ieditable.hpp \
+		../prog8/MinGL2/include/mingl/graphics/vec2d.h \
+		../prog8/MinGL2/include/mingl/transition/itransitionable.h \
+		../prog8/MinGL2/include/mingl/macros.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o text.o ../prog8/MinGL2/src/gui/text.cpp
 
 transition.o: ../prog8/MinGL2/src/transition/transition.cpp ../prog8/MinGL2/include/mingl/transition/transition.h \
