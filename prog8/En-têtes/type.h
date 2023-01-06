@@ -9,8 +9,8 @@
 struct AuthorizedKey
 {
     const std::vector <std::string> VParamChar {"KeyUp", "KeyDown", "KeyLeft", "KeyRight"};
-    const std::vector <std::string> VParamColorString {"Colorfond1", "Colorfond2"};
-    const std::vector <std::string> VParamConsommableChar {"pièce", "vide"};
+    const std::vector <std::string> VParamColorString {"ColorChemin", "ColorMur","ColorPorte","ColorPiece"};
+    const std::vector <std::string> VParamConsommableChar {"pièce", "vide","pouvoir","spawn"};
     const std::vector <std::string> VParamCollisionChar {"mur", "porte"};
 };
 
