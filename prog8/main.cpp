@@ -10,6 +10,7 @@
 //Mingl 2
 #include "mingl/mingl.h"
 #include "mingl/shape/rectangle.h"
+#include "mingl/gui/sprite.h"
 
 //En-tetes
 #include "En-têtes/pacman.h"
@@ -19,8 +20,10 @@ using namespace nsGraphics;
 using namespace nsShape;
 using namespace chrono;
 using namespace this_thread;
+using namespace nsGui;
 
 Vec2D PacmanPos;
+Vec2D fantomePos;
 
 void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
@@ -75,50 +78,116 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
     }
 }
 
-void deplacementPacman(MinGL & window, string & direction,vector <vector <char>> & mat) /* source: Alain casali + Maxime TAMARIN*/
+bool verificationCollision(vector <vector <char>> & mat, string & direction) /*Source: Maxime TAMARIN*/
 {
-    // On vérifie si ZQSD est pressé, et met a jour la position et la direction
-    if (window.isPressed({'z', false}) && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' ')) // regarde si prochaine case n'est pas interdite
+    // regarde le haut
+    if (direction == "haut")
     {
-        direction = "haut";
-        PacmanPos.setY(PacmanPos.getY() - 2);
-    }
-    else if (window.isPressed({'s', false}) && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' '))
-    {
-        direction = "bas";
-        PacmanPos.setY(PacmanPos.getY() + 2);
-    }
-    else if (window.isPressed({'q', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' '))
-    {
-        direction = "gauche";
-        PacmanPos.setX(PacmanPos.getX() - 2);
-    }
-    else if (window.isPressed({'d', false}) && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0' || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' '))
-    {
-        direction = "droite";
-        PacmanPos.setX(PacmanPos.getX() + 2);
+        if (mat[(PacmanPos.getY()-24)/50][PacmanPos.getX()/50] == 'X')
+            return false;
+        if (mat[(PacmanPos.getY()-24)/50][PacmanPos.getX()/50] == '-')
+            return false;
+        return true;
     }
 
-    // si pas de touche pressé on continue à aller dans la même direction
-    else if (direction == "haut" && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' '))
+    //regarde le bas
+    if (direction == "bas")
     {
-        mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-        PacmanPos.setY(PacmanPos.getY() - 2);
+        if (mat[(PacmanPos.getY()+24)/50][PacmanPos.getX()/50] == 'X')
+            return false;
+        if (mat[(PacmanPos.getY()+24)/50][PacmanPos.getX()/50] == '-')
+            return false;
+        return true;
     }
-    else if (direction == "bas" && ( mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '0'  || mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == ' '))
+
+    //regarde la droite
+    if (direction == "droite")
     {
-        mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-        PacmanPos.setY(PacmanPos.getY() + 2);
+        if (mat[PacmanPos.getY()/50][(PacmanPos.getX()+25)/50] == 'X')
+            return false;
+        if (mat[PacmanPos.getY()/50][(PacmanPos.getX()+25)/50] == '-')
+            return false;
+        return true;
     }
-    else if (direction == "gauche" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0'  || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' '))
+
+    //regarde la droite
+    if (direction == "gauche")
     {
-        mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
-        PacmanPos.setX(PacmanPos.getX() - 2);
+        if (mat[PacmanPos.getY()/50][(PacmanPos.getX()-24)/50] == 'X')
+            return false;
+        if (mat[PacmanPos.getY()/50][(PacmanPos.getX()-24)/50] == '-')
+            return false;
+        return true;
     }
-    else if (direction == "droite" && ( mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '0' || mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == ' ' ||  mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] == '.' ))
+    return false; // au cas normalement non possible ou direction a une autre valeur
+}
+
+void deplacementPacman(MinGL & window, string & direction,vector <vector <char>> & mat) /* source: Alain casali + Maxime TAMARIN*/
+{
+    if (verificationCollision(mat,direction))
     {
-        mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
-        PacmanPos.setX(PacmanPos.getX() + 2);
+        // On vérifie si ZQSD est pressé, et met a jour la position et la direction
+        if (window.isPressed({'z', false})) // regarde si prochaine case n'est pas interdite
+        {
+            direction = "haut";
+            PacmanPos.setY(PacmanPos.getY() - 2);
+        }
+        else if (window.isPressed({'s', false}))
+        {
+            direction = "bas";
+            PacmanPos.setY(PacmanPos.getY() + 2);
+        }
+        else if (window.isPressed({'q', false}))
+        {
+            direction = "gauche";
+            PacmanPos.setX(PacmanPos.getX() - 2);
+        }
+        else if (window.isPressed({'d', false}))
+        {
+            direction = "droite";
+            PacmanPos.setX(PacmanPos.getX() + 2);
+        }
+        // si pas de touche pressé on continue à aller dans la même direction
+        else if (direction == "haut")
+        {
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
+            PacmanPos.setY(PacmanPos.getY() - 2);
+        }
+        else if (direction == "bas" )
+        {
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
+            PacmanPos.setY(PacmanPos.getY() + 2);
+        }
+        else if (direction == "gauche")
+        {
+            mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
+            PacmanPos.setX(PacmanPos.getX() - 2);
+        }
+        else if (direction == "droite")
+        {
+            mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
+            PacmanPos.setX(PacmanPos.getX() + 2);
+        }
+    }
+    else
+    {
+        //si bloqué dans un mur
+        if (direction == "haut")
+        {
+            PacmanPos.setY(PacmanPos.getY() + 1);
+        }
+        else if (direction == "bas")
+        {
+            PacmanPos.setY(PacmanPos.getY() - 1);
+        }
+        else if (direction == "droite")
+        {
+            PacmanPos.setX(PacmanPos.getX() - 1);
+        }
+        else if (direction == "gauche")
+        {
+            PacmanPos.setX(PacmanPos.getX() + 1);
+        }
     }
 }
 
@@ -141,8 +210,14 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
     PacmanPos.setX(75);
     PacmanPos.setY(75);
 
-        //Initialise la bouche du pacman à false
-        bool boucheOuverte = false;
+    //Initialise la bouche du pacman à false
+    bool boucheOuverte = false;
+
+//=====| Initialisation Fantome |=====
+
+    //Initialise la position du fantome
+    fantomePos.setX(325);
+    fantomePos.setY(325);
 
 //=====| Autre Initialisation |=====
 
@@ -178,6 +253,10 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
         cout << "X: " << PacmanPos.getX() << " Y: " << PacmanPos.getY() << endl;
         afficheMat(map);
+
+        //instancie sprite
+        Sprite doggo("../prog8/fantome4.si2", nsGraphics::Vec2D(fantomePos.getX()+25,fantomePos.getY()+25 ));
+        window << doggo;
 
         ++frame;
 
