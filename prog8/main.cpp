@@ -23,23 +23,23 @@ using namespace this_thread;
 using namespace nsGui;
 
 Vec2D PacmanPos;
-Vec2D fantomePos;
+
 
 void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
     matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , 0 : chemin avec pièce, - : porte fantome, ' ' : chemin sans pièce
-                  {'X','.','0','0','0','0','0','X','0','0','0','0','0','0','X',}, // . : position pacman
-                  {'X','0','X','0','X','X','0','X','0','X','X','0','X','0','X',},
-                  {'X','0','0','0','0','0','0','0','0','0','0','0','0','0','X',},
+                  {'X','.','0','0','0','0','0','X','0','0','0','0','0','0','X',}, // . : position pacman, * : pouvoir parcman sur 10s
+                  {'X','0','X','0','X','X','0','X','0','X','X','*','X','0','X',},
+                  {'X','0','*','0','0','0','0','0','0','*','0','0','0','0','X',},
                   {'X','0','X','X','X','X','X','0','X','X','X','X','X','0','X',},
-                  {'X','0','0','0','0','0','0','0','0','0','0','0','0','0','X',},
+                  {'X','0','0','0','0','*','0','0','0','0','0','0','0','0','X',},
                   {'X','X','0','X','0','X','X','-','X','X','0','X','0','X','X',},
                   {'0','0','0','X','0','X',' ',' ',' ','X','0','X','0','0','0',}, //millieu
-                  {'X','0','X','X','0','X',' ',' ',' ','X','0','X','X','0','X',},
+                  {'X','0','X','X','0','X',' ',' ',' ','X','*','X','X','0','X',},
                   {'X','0','0','X','0','X','X','X','X','X','0','X','0','0','X',},
-                  {'X','X','0','0','0','X','0','0','0','X','0','0','0','X','X',},
-                  {'X','X','0','X','0','0','0','X','0','0','0','X','0','X','X',},
-                  {'X','X','0','X','X','X','0','X','0','X','X','X','0','X','X',},
+                  {'X','X','0','0','*','X','0','0','0','X','0','0','0','X','X',},
+                  {'X','X','0','X','0','0','*','X','0','0','0','X','*','X','X',},
+                  {'X','X','*','X','X','X','0','X','0','X','X','X','0','X','X',},
                   {'X','X','0','0','0','0','0','0','0','0','0','0','0','X','X',},
                   {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}};
 
@@ -74,6 +74,11 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), KPurple);
             else if (mat[y][x] == ' ')
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), KBlack);
+            else if (mat[y][x] == '*')
+            {
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
+                window << Circle(Vec2D(x*50+25,y*50+25), 13, KYellow);
+            }
         }
     }
 }
@@ -208,6 +213,13 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
     matriceInit(map);
     afficheMat(map);
 
+//=====| Initialisation struct des objets (pacman et fantome) |=====
+
+    struct entite
+    {
+        string direction;
+    };
+
 //=====| Initialisation Pacman |=====
 
     //Initialise la position du pacman
@@ -219,9 +231,25 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
 //=====| Initialisation Fantome |=====
 
+    //initialisation des fantomes via le struct
+    entite fantome1;
+    entite fantome2;
+    entite fantome3;
+
+    //initialisation vec2D
+    Vec2D fantome1Pos;
+    Vec2D fantome2Pos;
+    Vec2D fantome3Pos;
+
     //Initialise la position du fantome
-    fantomePos.setX(325);
-    fantomePos.setY(325);
+    fantome1Pos.setX(325);
+    fantome1Pos.setY(375);
+
+    fantome2Pos.setX(375);
+    fantome2Pos.setY(325);
+
+    fantome3Pos.setX(275);
+    fantome3Pos.setY(325);
 
 //=====| Autre Initialisation |=====
 
@@ -259,8 +287,10 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
         afficheMat(map);
 
         //instancie sprite
-        Sprite doggo("../prog8/fantome4.si2", nsGraphics::Vec2D(fantomePos.getX()+25,fantomePos.getY()+25 ));
-        window << doggo;
+        Sprite fantome1("../prog8/fantome4.si2", nsGraphics::Vec2D(fantome1Pos.getX()+25,fantome1Pos.getY()+25 ));
+        Sprite fantome2("../prog8/fantome4.si2", nsGraphics::Vec2D(fantome2Pos.getX()+25,fantome2Pos.getY()+25 ));
+        Sprite fantome3("../prog8/fantome4.si2", nsGraphics::Vec2D(fantome3Pos.getX()+25,fantome3Pos.getY()+25 ));
+        window << fantome1 << fantome2 << fantome3;
 
         ++frame;
 
