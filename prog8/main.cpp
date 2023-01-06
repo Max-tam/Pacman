@@ -1,4 +1,3 @@
-#include "mingl/shape/circle.h"
 #define FPS_LIMIT 60
 
 //bibliotheque c++
@@ -9,6 +8,7 @@
 
 //Mingl 2
 #include "mingl/mingl.h"
+#include "mingl/shape/circle.h"
 #include "mingl/shape/rectangle.h"
 #include "mingl/gui/sprite.h"
 
@@ -287,9 +287,9 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
         afficheMat(map);
 
         //instancie sprite
-        Sprite fantome1("../prog8/fantome4.si2", nsGraphics::Vec2D(fantome1Pos.getX()+25,fantome1Pos.getY()+25 ));
-        Sprite fantome2("../prog8/fantome4.si2", nsGraphics::Vec2D(fantome2Pos.getX()+25,fantome2Pos.getY()+25 ));
-        Sprite fantome3("../prog8/fantome4.si2", nsGraphics::Vec2D(fantome3Pos.getX()+25,fantome3Pos.getY()+25 ));
+        Sprite fantome1("../prog8/fantome4.si2", Vec2D(fantome1Pos.getX()+25,fantome1Pos.getY()+25 ));
+        Sprite fantome2("../prog8/fantome4.si2", Vec2D(fantome2Pos.getX()+25,fantome2Pos.getY()+25 ));
+        Sprite fantome3("../prog8/fantome4.si2", Vec2D(fantome3Pos.getX()+25,fantome3Pos.getY()+25 ));
         window << fantome1 << fantome2 << fantome3;
 
         ++frame;

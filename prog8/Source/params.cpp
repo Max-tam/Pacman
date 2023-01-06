@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 #include "En-têtes/params.h"
 #include "En-têtes/type.h"
@@ -37,13 +38,13 @@ void loadparam (CMyParam & Param) /*Sources Gavril / Prof correction prog13*/
     {
         char deuxpoints;
         ifs >> deuxpoints;
-        if(find(KAuthorizedKey.VParamChar.begin(), KAuthorizedKey.VParamChar.endl(), cle) != KAuthorizedKey.VParamChar.endl())
+        if(*find(KAuthorizedKey.VParamChar.begin(), KAuthorizedKey.VParamChar.end(), cle) == cle)
         {
             char val;
             ifs >> val;
             Param.MapParamChar[cle] = val;
         }
-        else if(find(KAuthorizedKey.VParamColorString.begin(), KAuthorizedKey.VParamColorString.endl(), cle))
+        else if(*find(KAuthorizedKey.VParamColorString.begin(), KAuthorizedKey.VParamColorString.end(), cle) == cle )
         {
             char val;
             ifs >> val;
