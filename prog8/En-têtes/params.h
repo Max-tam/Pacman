@@ -3,8 +3,8 @@
 
 #include "En-têtes/type.h"
 
-void InitParams (CMyParam & Param); //problème a voir
+void InitParams (CMyParam & Param);
 
-void LoadParams (CMyParam & Param); //probleme a voir
+void LoadParams (CMyParam & Param);
 
 #endif // PARAMS_H
