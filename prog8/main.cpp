@@ -130,21 +130,25 @@ void deplacementPacman(MinGL & window, string & direction,vector <vector <char>>
         if (window.isPressed({'z', false})) // regarde si prochaine case n'est pas interdite
         {
             direction = "haut";
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
             PacmanPos.setY(PacmanPos.getY() - 2);
         }
         else if (window.isPressed({'s', false}))
         {
             direction = "bas";
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
             PacmanPos.setY(PacmanPos.getY() + 2);
         }
         else if (window.isPressed({'q', false}))
         {
             direction = "gauche";
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
             PacmanPos.setX(PacmanPos.getX() - 2);
         }
         else if (window.isPressed({'d', false}))
         {
             direction = "droite";
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
             PacmanPos.setX(PacmanPos.getX() + 2);
         }
         // si pas de touche pressé on continue à aller dans la même direction
@@ -259,9 +263,6 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
         window << doggo;
 
         ++frame;
-
-//        nsGui::Sprite doggo("../prog8/pac.si2",Vec2D(0,0));
-//        window << doggo;
 
         // On finit la frame en cours
         window.finishFrame();
