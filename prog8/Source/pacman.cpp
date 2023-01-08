@@ -11,6 +11,7 @@
 #include "mingl/shape/triangle.h"
 
 #include "En-têtes/pacman.h"
+#include "En-têtes/type.h"
 
 using namespace std;
 using namespace nsGraphics;
@@ -18,6 +19,7 @@ using namespace nsShape;
 
 void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bool boucheOuverte, string & direction) // affiche un pacman au coordonnée donnée
 {
+    CMyParam param;
     // Si pacman va vers la droite
     if (direction == "droite")
     {

@@ -14,6 +14,7 @@
 
 //En-tetes
 #include "En-têtes/pacman.h"
+#include "En-têtes/type.h"
 
 using namespace std;
 using namespace nsGraphics;
@@ -23,6 +24,7 @@ using namespace this_thread;
 using namespace nsGui;
 
 Vec2D PacmanPos;
+CMyParam Param;
 
 
 void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
@@ -64,19 +66,36 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
         for (unsigned x = 0; x < mat[y].size(); ++x)
         {
             if (mat[y][x] == 'X')
+            {
+//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorMur")->second);
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlue);
+            }
+
             else if (mat[y][x] == '0')
             {
+//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
+//                window << Circle(Vec2D(x*50+25,y*50+25), 5, Param.MapParamString.find("ColorPiece")->second);
                 window << Circle(Vec2D(x*50+25,y*50+25), 5, KYellow);
             }
             else if (mat[y][x] == '-')
+            {
+//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
+//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), Param.MapParamString.find("ColorPorte")->second);
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), KPurple);
+            }
             else if (mat[y][x] == ' ')
-                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), KBlack);
+            {
+//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
+            }
+
             else if (mat[y][x] == '*')
             {
+//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
+//                window << Circle(Vec2D(x*50+25,y*50+25), 13, Param.MapParamString.find("ColorPiece")->second);
                 window << Circle(Vec2D(x*50+25,y*50+25), 13, KYellow);
             }
         }
@@ -199,7 +218,7 @@ void deplacementPacman(MinGL & window, string & direction,vector <vector <char>>
         }
     }
 }
-
+// Faire la suite pour changer les couleur en fonction des paramètres
 int main()  /* source: Alain casali + Maxime TAMARIN*/
 {
     // Initialise le système
@@ -211,6 +230,7 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
     vector <vector <char>> map;
     matriceInit(map);
+    cout << "paramètre:" << endl;
     afficheMat(map);
 
 //=====| Initialisation struct des objets (pacman et fantome) |=====
@@ -283,13 +303,13 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
         if (frame%15 == 0) // toute les 15 execution (1/4 de seconde) on change l'état de la bouche
             boucheOuverte = !boucheOuverte;
 
-        cout << "X: " << PacmanPos.getX() << " Y: " << PacmanPos.getY() << endl;
-        afficheMat(map);
+        cout << "X: " << PacmanPos.getX()/50 << " Y: " << PacmanPos.getY()/50 << endl;
+//        afficheMat(map);
 
         //instancie sprite
-        Sprite fantome1("../prog8/fantome4.si2", Vec2D(fantome1Pos.getX()+25,fantome1Pos.getY()+25 ));
-        Sprite fantome2("../prog8/fantome4.si2", Vec2D(fantome2Pos.getX()+25,fantome2Pos.getY()+25 ));
-        Sprite fantome3("../prog8/fantome4.si2", Vec2D(fantome3Pos.getX()+25,fantome3Pos.getY()+25 ));
+        Sprite fantome1("../prog8/autre fichier/fantome4.si2", Vec2D(fantome1Pos.getX()+25,fantome1Pos.getY()+25 ));
+        Sprite fantome2("../prog8/autre fichier/fantome4.si2", Vec2D(fantome2Pos.getX()+25,fantome2Pos.getY()+25 ));
+        Sprite fantome3("../prog8/autre fichier/fantome4.si2", Vec2D(fantome3Pos.getX()+25,fantome3Pos.getY()+25 ));
         window << fantome1 << fantome2 << fantome3;
 
         ++frame;
