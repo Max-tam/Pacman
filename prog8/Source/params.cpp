@@ -32,83 +32,63 @@ RGBAcolor ConvertStringRGBAcolor(string & text)
 
 void LoadParams (CMyParam & Param)
 {
-    string line;
-    string cle;
-    ifstream ifs("../PacMan/Nos_fichiers/config.yaml");
-
-    if(ifs.is_open())
+    ifstream ifs("../prog8/autre fichier/config.yaml");
+    if (!ifs)
     {
-        while (true)
-        {
-            getline (ifs, line);
-            if (ifs.eof ()) break;
-
-            unsigned i = 0;
-            cle = "";
-            while (true)
-            {
-                if (line[i] == ' ')
-                {
-                    break;
-                }
-                cle = cle + line[i];
-                ++i;
-            }
-            i = i + 3; // on passe de l'autre côté du ':'
-
-            // on cherche la clé
-            if (*find(KAuthorizedKey.VParamChar.begin(),KAuthorizedKey.VParamChar.end(),cle) == cle) //pour valeur char
-            {
-                char valeur = line[i];
-                Param.MapParamChar[cle] = valeur;
-            }
-            else if (*find(KAuthorizedKey.VParamColorString.begin(),KAuthorizedKey.VParamColorString.end(),cle) == cle)
-            {
-                string valeurString;
-                while (true)
-                {
-                    if (i == line.size())
-                    {
-                        break;
-                    }
-                    valeurString = valeurString + line[i];
-                    ++i;
-                }
-                RGBAcolor valeur = ConvertStringRGBAcolor(valeurString);
-                Param.MapParamString[cle] = valeur ;
-            }
-        }
-        ifs.close();
-
+        cerr << "le fichier de configuration est pas ouvert" << endl ;
+        exit(-1);
     }
-
+    cout << "fichier ouvert" << endl;
+    for(string cle, poubelle; ifs >> cle;)
+    {
+        char deuxpoints;
+        ifs >> deuxpoints;
+        if(*find(KAuthorizedKey.VParamChar.begin(), KAuthorizedKey.VParamChar.end(), cle) == cle)
+        {
+            char val;
+            ifs >> val;
+            Param.MapParamChar[cle] = val;
+        }
+        else if(*find(KAuthorizedKey.VParamString.begin(), KAuthorizedKey.VParamString.end(), cle) == cle)
+        {
+            string valFichier;
+            ifs >> valFichier;
+            cout << valFichier;
+            RGBAcolor val = ConvertStringRGBAcolor(valFichier);
+            Param.MapParamString[cle] = val;
+        }
+        else
+            getline(ifs, poubelle);
+    }
 }
 
 void InitParams (CMyParam & Param) /*Gavril prof correction*/
 {
-//Move Keys
-Param.MapParamChar["KeyUp"] = 'z';
-Param.MapParamChar["KeyDown"] = 's';
-Param.MapParamChar["KeyLeft"] = 'q';
-Param.MapParamChar["KeyRight"] = 'd';
 
-//Display Colors
-Param.MapParamString["ColorChemin"] = KBlack;
-Param.MapParamString["ColorMur"] = KBlue;
-Param.MapParamString["ColorPorte"] = KPurple;
-Param.MapParamString["ColorPiece"] = KYellow;
-Param.MapParamString["ColorPacmanEnerve"] = KRed;
-Param.MapParamString["ColorPacman"] = KYellow;
+    //Move Keys
+    Param.MapParamChar["KeyUp"] = 'z';
+    Param.MapParamChar["KeyDown"] = 's';
+    Param.MapParamChar["KeyLeft"] = 'q';
+    Param.MapParamChar["KeyRight"] = 'd';
 
-// Consommable
-Param.MapParamConsommableChar["pièce"] = '0';
-Param.MapParamConsommableChar["vide"] = ' ';
-Param.MapParamConsommableChar["pouvoir"] = '*';
+    //Display Colors
+    Param.MapParamString["ColorChemin"] = KBlack;
+    Param.MapParamString["ColorMur"] = KBlue;
+    Param.MapParamString["ColorPorte"] = KPurple;
+    Param.MapParamString["ColorPiece"] = KYellow;
+    Param.MapParamString["ColorPacmanEnerve"] = KRed;
+    Param.MapParamString["ColorPacman"] = KYellow;
 
-//collision
-Param.MapParamCollisionChar["mur"] = 'X';
-Param.MapParamCollisionChar["porte"] = '-';
-LoadParams(Param); // on verifie si dans le fichier des informations ne sont pas différente
+    // Consommable
+    Param.MapParamConsommableChar["pièce"] = '0';
+    Param.MapParamConsommableChar["vide"] = ' ';
+    Param.MapParamConsommableChar["pouvoir"] = '*';
+
+    //collision
+    Param.MapParamCollisionChar["mur"] = 'X';
+    Param.MapParamCollisionChar["porte"] = '-';
+
+    LoadParams(Param); // on verifie si dans le fichier des informations ne sont pas différente
 }
 
 // faire fonction qui avec
