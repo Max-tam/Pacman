@@ -151,6 +151,12 @@ void deplacementPacman(MinGL & window, string & direction,vector <vector <char>>
     if (mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '*')
         pouvoirPacman = true;
 
+    if ((PacmanPos.getX()+55)/50 == 0) // téléporte le pacman à droite
+        PacmanPos.setX(800);
+
+    if ((PacmanPos.getX()-55)/50 == 15) // téléporte le pacman à gauche
+        PacmanPos.setX(0);
+
     if (verificationCollision(mat,direction))
     {
 
