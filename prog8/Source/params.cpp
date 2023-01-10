@@ -11,33 +11,23 @@
 using namespace std;
 using namespace nsGraphics;
 
-
-void InitParams (CMyParam & Param) /*Gavril prof correction*/
+RGBAcolor ConvertStringRGBAcolor(string & text)
 {
-//Move Keys
-Param.MapParamChar["KeyUp"] = 'z';
-Param.MapParamChar["KeyDown"] = 's';
-Param.MapParamChar["KeyLeft"] = 'q';
-Param.MapParamChar["KeyRight"] = 'd';
-
-//Display Colors
-Param.MapParamString["ColorChemin"] = KBlack;
-Param.MapParamString["ColorMur"] = KBlue;
-Param.MapParamString["ColorPorte"] = KPurple;
-Param.MapParamString["ColorPiece"] = KYellow;
-Param.MapParamString["ColorPacmanEnerve"] = KRed;
-Param.MapParamString["ColorPacman"] = KYellow;
-
-// Consommable
-Param.MapParamConsommableChar["pièce"] = '0';
-Param.MapParamConsommableChar["vide"] = ' ';
-Param.MapParamConsommableChar["pouvoir"] = '*';
-Param.MapParamConsommableChar["spawn"] = '.';
-
-//collision
-Param.MapParamCollisionChar["mur"] = 'X';
-Param.MapParamCollisionChar["porte"] = '-';
-//LoadParams(Param); // on verifie si dans le fichier des informations ne sont pas différente
+    if (text == "KBlack")
+        return KBlack;
+    if (text == "KYellow")
+        return KYellow;
+    if (text == "KGreen")
+        return KGreen;
+    if (text == "KBlue")
+        return KBlue;
+    if (text == "KRed")
+        return KRed;
+    if (text == "KPurple")
+        return KPurple;
+    if (text == "KWhite")
+        return KWhite;
+    return KBlack; // pas défaut
 }
 
 void LoadParams (CMyParam & Param)
@@ -74,16 +64,17 @@ void LoadParams (CMyParam & Param)
             }
             else if (*find(KAuthorizedKey.VParamColorString.begin(),KAuthorizedKey.VParamColorString.end(),cle) == cle)
             {
-                nsGraphics::RGBAcolor valeur;
+                string valeurString;
                 while (true)
                 {
                     if (i == line.size())
                     {
                         break;
                     }
-                    valeur = valeur + line[i];
+                    valeurString = valeurString + line[i];
                     ++i;
                 }
+                RGBAcolor valeur = ConvertStringRGBAcolor(valeurString);
                 Param.MapParamString[cle] = valeur ;
             }
         }
@@ -91,6 +82,34 @@ void LoadParams (CMyParam & Param)
 
     }
 
+}
+
+void InitParams (CMyParam & Param) /*Gavril prof correction*/
+{
+//Move Keys
+Param.MapParamChar["KeyUp"] = 'z';
+Param.MapParamChar["KeyDown"] = 's';
+Param.MapParamChar["KeyLeft"] = 'q';
+Param.MapParamChar["KeyRight"] = 'd';
+
+//Display Colors
+Param.MapParamString["ColorChemin"] = KBlack;
+Param.MapParamString["ColorMur"] = KBlue;
+Param.MapParamString["ColorPorte"] = KPurple;
+Param.MapParamString["ColorPiece"] = KYellow;
+Param.MapParamString["ColorPacmanEnerve"] = KRed;
+Param.MapParamString["ColorPacman"] = KYellow;
+
+// Consommable
+Param.MapParamConsommableChar["pièce"] = '0';
+Param.MapParamConsommableChar["vide"] = ' ';
+Param.MapParamConsommableChar["pouvoir"] = '*';
+Param.MapParamConsommableChar["spawn"] = '.';
+
+//collision
+Param.MapParamCollisionChar["mur"] = 'X';
+Param.MapParamCollisionChar["porte"] = '-';
+//LoadParams(Param); // on verifie si dans le fichier des informations ne sont pas différente
 }
 
 // faire fonction qui avec
