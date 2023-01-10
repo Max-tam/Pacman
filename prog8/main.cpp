@@ -30,7 +30,7 @@ CMyParam Param;
 void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
     matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , 0 : chemin avec pièce, - : porte fantome, ' ' : chemin sans pièce
-                  {'X','.','0','0','0','0','0','X','0','0','0','0','0','0','X',}, // . : position pacman, * : pouvoir parcman sur 10s
+                  {'X','0','0','0','0','0','0','X','0','0','0','0','0','0','X',}, // * : pouvoir parcman sur 10s
                   {'X','0','X','0','X','X','0','X','0','X','X','*','X','0','X',},
                   {'X','0','*','0','0','0','0','0','0','*','0','0','0','0','X',},
                   {'X','0','X','X','X','X','X','0','X','X','X','X','X','0','X',},
@@ -59,8 +59,9 @@ void afficheMat(vector <vector< char>> & mat) /*source: Maxime TAMARIN*/
     }
 }
 
-void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TAMARIN*/
+void afficheMap(MinGL &window, vector <vector <char>> & mat,unsigned & pointMap) /*source: Maxime TAMARIN*/
 {
+    pointMap = 0;
     for (unsigned y = 0; y < mat.size(); ++y)
     {
         for (unsigned x = 0; x < mat[y].size(); ++x)
@@ -77,6 +78,7 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
 //                window << Circle(Vec2D(x*50+25,y*50+25), 5, Param.MapParamString.find("ColorPiece")->second);
                 window << Circle(Vec2D(x*50+25,y*50+25), 5, KYellow);
+                ++pointMap;
             }
             else if (mat[y][x] == '-')
             {
@@ -97,6 +99,7 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat) /*source: Maxime TA
                 window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
 //                window << Circle(Vec2D(x*50+25,y*50+25), 13, Param.MapParamString.find("ColorPiece")->second);
                 window << Circle(Vec2D(x*50+25,y*50+25), 13, KYellow);
+                ++pointMap;
             }
         }
     }
@@ -218,7 +221,8 @@ void deplacementPacman(MinGL & window, string & direction,vector <vector <char>>
         }
     }
 }
-// Faire la suite pour changer les couleur en fonction des paramètres
+
+
 int main()  /* source: Alain casali + Maxime TAMARIN*/
 {
     // Initialise le système
@@ -230,7 +234,6 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
     vector <vector <char>> map;
     matriceInit(map);
-    cout << "paramètre:" << endl;
     afficheMat(map);
 
 //=====| Initialisation struct des objets (pacman et fantome) |=====
@@ -248,6 +251,9 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
     //Initialise la bouche du pacman à false
     bool boucheOuverte = false;
+
+    //Initialisation direction pacman
+    string direction = "droite";
 
 //=====| Initialisation Fantome |=====
 
@@ -273,8 +279,9 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
 //=====| Autre Initialisation |=====
 
-    //Initialisation direction pacman
-    string direction = "droite";
+    // nombre de point sur la map (quand = 0 fin)
+
+    unsigned pointMap;
 
     // frame = nombre d'execution (comme 60FPS alors 60 execution / seconde)
     unsigned frame = 0;
@@ -295,7 +302,7 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
         // On execute les processus
 
-        afficheMap(window,map);
+        afficheMap(window,map,pointMap); //affiche le visuel de la map
 
         deplacementPacman(window,direction,map); //regarde les touches appuyées et si la direction du pacman doit changer ou non
 
@@ -303,8 +310,12 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
         if (frame%15 == 0) // toute les 15 execution (1/4 de seconde) on change l'état de la bouche
             boucheOuverte = !boucheOuverte;
 
-        cout << "X: " << PacmanPos.getX()/50 << " Y: " << PacmanPos.getY()/50 << endl;
-//        afficheMat(map);
+        if (pointMap == 85) //quand plus de point sur la map à manger
+            matriceInit(map);
+
+        //affichage console
+        cout << "X: " << PacmanPos.getX()/50 << " Y: " << PacmanPos.getY()/50 << endl; // coordonée
+        cout << "point restant: " <<pointMap << endl; // point restant sur la map à manger
 
         //instancie sprite
         Sprite fantome1("../prog8/autre fichier/fantome4.si2", Vec2D(fantome1Pos.getX()+25,fantome1Pos.getY()+25 ));
