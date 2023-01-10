@@ -1,3 +1,4 @@
+#include "En-têtes/params.h"
 #define FPS_LIMIT 60
 
 //bibliotheque c++
@@ -5,6 +6,7 @@
 #include <thread>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 //Mingl 2
 #include "mingl/mingl.h"
@@ -68,37 +70,32 @@ void afficheMap(MinGL &window, vector <vector <char>> & mat,unsigned & pointMap)
         {
             if (mat[y][x] == 'X')
             {
-//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorMur")->second);
-                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlue);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorMur")->second);
             }
 
             else if (mat[y][x] == '0')
             {
-//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
-                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
-//                window << Circle(Vec2D(x*50+25,y*50+25), 5, Param.MapParamString.find("ColorPiece")->second);
-                window << Circle(Vec2D(x*50+25,y*50+25), 5, KYellow);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
+                window << Circle(Vec2D(x*50+25,y*50+25), 5, Param.MapParamString.find("ColorPiece")->second);
+
                 ++pointMap;
             }
             else if (mat[y][x] == '-')
             {
-//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
-                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
-//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), Param.MapParamString.find("ColorPorte")->second);
-                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), KPurple);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+20), Param.MapParamString.find("ColorPorte")->second);
+
             }
             else if (mat[y][x] == ' ')
             {
-//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
-                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
             }
 
             else if (mat[y][x] == '*')
             {
-//                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
-                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), KBlack);
-//                window << Circle(Vec2D(x*50+25,y*50+25), 13, Param.MapParamString.find("ColorPiece")->second);
-                window << Circle(Vec2D(x*50+25,y*50+25), 13, KYellow);
+                window << Rectangle(Vec2D(x*50, y*50), Vec2D(x*50+50, y*50+50), Param.MapParamString.find("ColorChemin")->second);
+                window << Circle(Vec2D(x*50+25,y*50+25), 13, Param.MapParamString.find("ColorPiece")->second);
+
                 ++pointMap;
             }
         }
@@ -154,25 +151,25 @@ void deplacementPacman(MinGL & window, string & direction,vector <vector <char>>
     if (verificationCollision(mat,direction))
     {
         // On vérifie si ZQSD est pressé, et met a jour la position et la direction
-        if (window.isPressed({'z', false})) // regarde si prochaine case n'est pas interdite
+        if (window.isPressed({Param.MapParamChar.find("KeyUp")->second, false})) // regarde si prochaine case n'est pas interdite
         {
             direction = "haut";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
             PacmanPos.setY(PacmanPos.getY() - 2);
         }
-        else if (window.isPressed({'s', false}))
+        else if (window.isPressed({Param.MapParamChar.find("KeyDown")->second, false}))
         {
             direction = "bas";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
             PacmanPos.setY(PacmanPos.getY() + 2);
         }
-        else if (window.isPressed({'q', false}))
+        else if (window.isPressed({Param.MapParamChar.find("KeyLeft")->second, false}))
         {
             direction = "gauche";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
             PacmanPos.setX(PacmanPos.getX() - 2);
         }
-        else if (window.isPressed({'d', false}))
+        else if (window.isPressed({Param.MapParamChar.find("KeyRight")->second, false}))
         {
             direction = "droite";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
@@ -279,8 +276,10 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
 //=====| Autre Initialisation |=====
 
-    // nombre de point sur la map (quand = 0 fin)
+    //initialisation paramètre
+    InitParams(Param);
 
+    // nombre de point sur la map (quand = 0 fin)
     unsigned pointMap;
 
     // frame = nombre d'execution (comme 60FPS alors 60 execution / seconde)
@@ -310,7 +309,7 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
         if (frame%15 == 0) // toute les 15 execution (1/4 de seconde) on change l'état de la bouche
             boucheOuverte = !boucheOuverte;
 
-        if (pointMap == 85) //quand plus de point sur la map à manger
+        if (pointMap == 0) //quand plus de point sur la map à manger
             matriceInit(map);
 
         //affichage console

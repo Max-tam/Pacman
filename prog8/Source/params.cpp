@@ -104,12 +104,11 @@ Param.MapParamString["ColorPacman"] = KYellow;
 Param.MapParamConsommableChar["pièce"] = '0';
 Param.MapParamConsommableChar["vide"] = ' ';
 Param.MapParamConsommableChar["pouvoir"] = '*';
-Param.MapParamConsommableChar["spawn"] = '.';
 
 //collision
 Param.MapParamCollisionChar["mur"] = 'X';
 Param.MapParamCollisionChar["porte"] = '-';
-//LoadParams(Param); // on verifie si dans le fichier des informations ne sont pas différente
+LoadParams(Param); // on verifie si dans le fichier des informations ne sont pas différente
 }
 
 // faire fonction qui avec
