@@ -1,7 +1,6 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
-
 #include "En-têtes/type.h"
 
 using namespace nsGraphics;

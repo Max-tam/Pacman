@@ -38,7 +38,6 @@ void LoadParams (CMyParam & Param)
         cerr << "le fichier de configuration est pas ouvert" << endl ;
         exit(-1);
     }
-    cout << "fichier ouvert" << endl;
     for(string cle, poubelle; ifs >> cle;)
     {
         char deuxpoints;
@@ -53,7 +52,6 @@ void LoadParams (CMyParam & Param)
         {
             string valFichier;
             ifs >> valFichier;
-            cout << valFichier;
             RGBAcolor val = ConvertStringRGBAcolor(valFichier);
             Param.MapParamString[cle] = val;
         }

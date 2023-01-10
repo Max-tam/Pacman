@@ -17,9 +17,8 @@ using namespace std;
 using namespace nsGraphics;
 using namespace nsShape;
 
-void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bool boucheOuverte, string & direction) // affiche un pacman au coordonnée donnée
+void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bool boucheOuverte, string & direction,bool & pouvoirPacman, CMyParam & Param) // affiche un pacman au coordonnée donnée
 {
-    CMyParam Param;
     InitParams(Param);
     // Si pacman va vers la droite
     if (direction == "droite")
@@ -27,7 +26,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         //si pacman a la bouche ouverte
         if (boucheOuverte)
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
             window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
             window << Triangle(Vec2D(posX,posY), Vec2D(posX+15,posY-14), Vec2D(posX+20,posY-7), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 1 (couleur = sol)
             window << Triangle(Vec2D(posX,posY), Vec2D(posX+20,posY-7), Vec2D(posX+22,posY), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 2
@@ -37,7 +39,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         //si pacman à la bouche fermée
         else
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second);
             window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
         }
     }
@@ -47,7 +52,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         // si pacman a la bouche ouverte
         if (boucheOuverte)
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second);
             window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
             window << Triangle(Vec2D(posX,posY), Vec2D(posX-15,posY-14), Vec2D(posX-20,posY-7), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 1
             window << Triangle(Vec2D(posX,posY), Vec2D(posX-20,posY-7), Vec2D(posX-22,posY), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 2
@@ -57,7 +65,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         // si pacman a la bouche fermée
         else
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second);
             window << Circle(Vec2D(posX,posY-10), 2, KBlack); // oeil du pacman
         }
     }
@@ -67,7 +78,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         // si pacman a la bouche ouverte
         if (boucheOuverte)
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second);
             window << Circle(Vec2D(posX+10,posY), 2, KBlack); // oeil du pacman
             window << Triangle(Vec2D(posX,posY), Vec2D(posX-14,posY+15), Vec2D(posX-7,posY+20), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 1
             window << Triangle(Vec2D(posX,posY), Vec2D(posX-7,posY+20), Vec2D(posX,posY+22), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 2
@@ -77,7 +91,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         // si pacman a la bouche fermée
         else
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second);
             window << Circle(Vec2D(posX+10,posY), 2, KBlack); // oeil du pacman
         }
     }
@@ -87,7 +104,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         // si pacman a la bouche ouverte
         if (boucheOuverte)
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second);
             window << Circle(Vec2D(posX-10,posY), 2, KBlack); // oeil du pacman
             window << Triangle(Vec2D(posX,posY), Vec2D(posX-14,posY-15), Vec2D(posX-7,posY-20), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 1
             window << Triangle(Vec2D(posX,posY), Vec2D(posX-7,posY-20), Vec2D(posX,posY-22), Param.MapParamString.find("ColorChemin")->second); // partie de bouche 2
@@ -97,7 +117,10 @@ void affichePacman(const unsigned & posX,const unsigned & posY, MinGL &window,bo
         // si pacman a la bouche fermée
         else
         {
-            window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second); // corp du pacman
+            if (pouvoirPacman)
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacmanEnerve")->second);
+            else
+                window << Circle(Vec2D(posX,posY), 20, Param.MapParamString.find("ColorPacman")->second);
             window << Circle(Vec2D(posX-10,posY), 2, KBlack); // oeil du pacman
         }
     }

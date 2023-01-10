@@ -146,55 +146,83 @@ bool verificationCollision(vector <vector <char>> & mat, string & direction) /*S
     return false; // au cas normalement non possible ou direction a une autre valeur
 }
 
-void deplacementPacman(MinGL & window, string & direction,vector <vector <char>> & mat) /* source: Alain casali + Maxime TAMARIN*/
+void deplacementPacman(MinGL & window, string & direction,vector <vector <char>> & mat,bool & pouvoirPacman) /* source: Alain casali + Maxime TAMARIN*/
 {
+    if (mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] == '*')
+        pouvoirPacman = true;
+
     if (verificationCollision(mat,direction))
     {
+
         // On vérifie si ZQSD est pressé, et met a jour la position et la direction
         if (window.isPressed({Param.MapParamChar.find("KeyUp")->second, false})) // regarde si prochaine case n'est pas interdite
         {
             direction = "haut";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-            PacmanPos.setY(PacmanPos.getY() - 2);
+            if (pouvoirPacman)
+                PacmanPos.setY(PacmanPos.getY() - 3);
+            else
+                PacmanPos.setY(PacmanPos.getY() - 2);
         }
         else if (window.isPressed({Param.MapParamChar.find("KeyDown")->second, false}))
         {
             direction = "bas";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-            PacmanPos.setY(PacmanPos.getY() + 2);
+            if (pouvoirPacman)
+                PacmanPos.setY(PacmanPos.getY() + 3);
+            else
+                PacmanPos.setY(PacmanPos.getY() + 2);
         }
         else if (window.isPressed({Param.MapParamChar.find("KeyLeft")->second, false}))
         {
             direction = "gauche";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-            PacmanPos.setX(PacmanPos.getX() - 2);
+            if (pouvoirPacman)
+                PacmanPos.setX(PacmanPos.getX() - 3);
+            else
+                PacmanPos.setX(PacmanPos.getX() - 2);
         }
         else if (window.isPressed({Param.MapParamChar.find("KeyRight")->second, false}))
         {
             direction = "droite";
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-            PacmanPos.setX(PacmanPos.getX() + 2);
+            if (pouvoirPacman)
+                PacmanPos.setX(PacmanPos.getX() + 3);
+            else
+                PacmanPos.setX(PacmanPos.getX() + 2);
         }
         // si pas de touche pressé on continue à aller dans la même direction
         else if (direction == "haut")
         {
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-            PacmanPos.setY(PacmanPos.getY() - 2);
+            if (pouvoirPacman)
+                PacmanPos.setY(PacmanPos.getY() - 3);
+            else
+                PacmanPos.setY(PacmanPos.getY() - 2);
         }
         else if (direction == "bas" )
         {
             mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
-            PacmanPos.setY(PacmanPos.getY() + 2);
+            if (pouvoirPacman)
+                PacmanPos.setY(PacmanPos.getY() + 3);
+            else
+                PacmanPos.setY(PacmanPos.getY() + 2);
         }
         else if (direction == "gauche")
         {
-            mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
-            PacmanPos.setX(PacmanPos.getX() - 2);
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
+            if (pouvoirPacman)
+                PacmanPos.setX(PacmanPos.getX() - 3);
+            else
+                PacmanPos.setX(PacmanPos.getX() - 2);
         }
         else if (direction == "droite")
         {
-            mat[PacmanPos.getY()/50][(PacmanPos.getX()/50)] = ' ';
-            PacmanPos.setX(PacmanPos.getX() + 2);
+            mat[(PacmanPos.getY()/50)][PacmanPos.getX()/50] = ' ';
+            if (pouvoirPacman)
+                PacmanPos.setX(PacmanPos.getX() + 3);
+            else
+                PacmanPos.setX(PacmanPos.getX() + 2);
         }
     }
     else
@@ -252,6 +280,10 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
     //Initialisation direction pacman
     string direction = "droite";
 
+    //Initialisation pouvoir pacman à false
+    bool pouvoirPacman = false;
+    unsigned PouvoirTemp = 1;
+
 //=====| Initialisation Fantome |=====
 
     //initialisation des fantomes via le struct
@@ -303,18 +335,30 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
         afficheMap(window,map,pointMap); //affiche le visuel de la map
 
-        deplacementPacman(window,direction,map); //regarde les touches appuyées et si la direction du pacman doit changer ou non
+        deplacementPacman(window,direction,map,pouvoirPacman); //regarde les touches appuyées et si la direction du pacman doit changer ou non
 
-        affichePacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction); // affiche pacman en fonction d'une position
+        affichePacman(PacmanPos.getX(),PacmanPos.getY(),window, boucheOuverte,direction,pouvoirPacman,Param); // affiche pacman en fonction d'une position
         if (frame%15 == 0) // toute les 15 execution (1/4 de seconde) on change l'état de la bouche
             boucheOuverte = !boucheOuverte;
 
         if (pointMap == 0) //quand plus de point sur la map à manger
             matriceInit(map);
 
+        if (pouvoirPacman)
+        {
+            if (PouvoirTemp%360 == 0) // 360 images = 6 secondes
+            {
+                pouvoirPacman = false;
+                PouvoirTemp = 1;
+            }
+            else
+                ++PouvoirTemp;
+        }
+
         //affichage console
         cout << "X: " << PacmanPos.getX()/50 << " Y: " << PacmanPos.getY()/50 << endl; // coordonée
         cout << "point restant: " <<pointMap << endl; // point restant sur la map à manger
+        cout << "statut pouvoir pacman: " <<pouvoirPacman << endl << endl;
 
         //instancie sprite
         Sprite fantome1("../prog8/autre fichier/fantome4.si2", Vec2D(fantome1Pos.getX()+25,fantome1Pos.getY()+25 ));
