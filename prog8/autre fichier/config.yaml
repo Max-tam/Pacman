@@ -4,7 +4,7 @@ KeyLeft : q
 KeyRight : d
 ColorChemin : KBlack
 ColorMur : KBlue
-ColorPorte : KYellow
-ColorPiece : KGreen
-ColorPacmanEnerve : Kblue
+ColorPorte : KPurple
+ColorPiece : KYellow
+ColorPacmanEnerve : KRed
 ColorPacman : KYellow
