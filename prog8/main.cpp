@@ -29,11 +29,11 @@ Vec2D PacmanPos;
 CMyParam Param;
 
 
-void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
+void matriceInitPacman(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
     matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , 0 : chemin avec pièce, - : porte fantome, ' ' : chemin sans pièce
                   {'X','0','0','0','0','0','0','X','0','0','0','0','0','0','X',}, // * : pouvoir parcman sur 10s
-                  {'X','0','X','0','X','X','0','X','0','X','X','*','X','0','X',},
+                  {'X','0','X','0','X','X','0','X','0','X','X','*','X','0','X',}, // / : intersection
                   {'X','0','*','0','0','0','0','0','0','*','0','0','0','0','X',},
                   {'X','0','X','X','X','X','X','0','X','X','X','X','X','0','X',},
                   {'X','0','0','0','0','*','0','0','0','0','0','0','0','0','X',},
@@ -45,6 +45,26 @@ void matriceInit(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
                   {'X','X','0','X','0','0','*','X','0','0','0','X','*','X','X',},
                   {'X','X','*','X','X','X','0','X','0','X','X','X','0','X','X',},
                   {'X','X','0','0','0','0','0','0','0','0','0','0','0','X','X',},
+                  {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}};
+
+}
+
+void matriceInitFantome(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
+{
+    matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , - : porte fantome, ' ' : chemin sans pièce
+                  {'X','/',' ','/',' ',' ','/','X','/',' ',' ','/',' ','/','X',}, // / : intersection
+                  {'X',' ','X',' ','X','X',' ','X',' ','X','X',' ','X',' ','X',}, // . : sorti de la cage (direction mise à "haut")
+                  {'X','/',' ','/',' ',' ','/','/','/',' ',' ','/',' ','/','X',},
+                  {'X',' ','X','X','X','X','X',' ','X','X','X','X','X',' ','X',},
+                  {'X','/','/',' ','/',' ',' ','/',' ',' ','/',' ','/','/','X',},
+                  {'X','X',' ','X',' ','X','X','-','X','X',' ','X',' ','X','X',},
+                  {' ','/','/','X',' ','X',' ','.',' ','X',' ','X','/','/',' ',}, //millieu
+                  {'X',' ','X','X',' ','X',' ',' ',' ','X',' ','X','X',' ','X',},
+                  {'X','/','/','X',' ','X','X','X','X','X',' ','X','/','/','X',},
+                  {'X','X','/',' ','/','X','/',' ','/','X','/',' ','/','X','X',},
+                  {'X','X',' ','X','/',' ','/','X','/',' ','/','X',' ','X','X',},
+                  {'X','X',' ','X','X','X',' ','X',' ','X','X','X',' ','X','X',},
+                  {'X','X','/',' ',' ',' ','/',' ','/',' ',' ',' ','/','X','X',},
                   {'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}};
 
 }
@@ -264,12 +284,12 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 //=====| Initialisation Map |=====
 
     vector <vector <char>> map;
-    matriceInit(map);
+    matriceInitPacman(map);
     afficheMat(map);
 
-//=====| Initialisation struct des objets (pacman et fantome) |=====
+//=====| Initialisation struct des fantomes |=====
 
-    struct entite
+    struct fantome
     {
         string direction;
     };
@@ -293,9 +313,9 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 //=====| Initialisation Fantome |=====
 
     //initialisation des fantomes via le struct
-    entite fantome1;
-    entite fantome2;
-    entite fantome3;
+    fantome fantome1;
+    fantome fantome2;
+    fantome fantome3;
 
     //initialisation vec2D
     Vec2D fantome1Pos;
@@ -311,6 +331,11 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
 
     fantome3Pos.setX(275);
     fantome3Pos.setY(325);
+
+    //Initialise la directionc
+    fantome1.direction = "haut";
+    fantome2.direction = "gauche";
+    fantome3.direction = "droite";
 
 //=====| Autre Initialisation |=====
 
@@ -348,7 +373,7 @@ int main()  /* source: Alain casali + Maxime TAMARIN*/
             boucheOuverte = !boucheOuverte;
 
         if (pointMap == 0) //quand plus de point sur la map à manger
-            matriceInit(map);
+            matriceInitPacman(map);
 
         if (pouvoirPacman)
         {
