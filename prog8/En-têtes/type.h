@@ -10,14 +10,15 @@
 struct AuthorizedKey
 {
     const std::vector <std::string> VParamChar {"KeyUp", "KeyDown", "KeyLeft", "KeyRight"};
-    const std::vector <std::string> VParamColorString {"ColorChemin", "ColorMurs","ColorPorte","ColorPiece","ColorPacmanEnerve","ColorPacman"};
+    const std::vector <std::string> VParamString {"ColorChemin", "ColorMurs","ColorPorte","ColorPiece","ColorPacmanEnerve","ColorPacman"};
     const std::vector <std::string> VParamConsommableChar {"pièce", "vide","pouvoir"};
     const std::vector <std::string> VParamCollisionChar {"mur", "porte"};
 };
 
 const AuthorizedKey KAuthorizedKey;
 
-struct CMyParam {
+struct CMyParam
+{
 std::map <std::string, char> MapParamChar;
 std::map <std::string, nsGraphics::RGBAcolor> MapParamString;
 std::map <std::string, char> MapParamConsommableChar;
