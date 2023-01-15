@@ -1,3 +1,11 @@
+/**
+ * \file params.cpp
+ * \brief Initialisation paramètre
+ * \author {TAMARIN Maxime, ROUBAUD Axel, BOSSO Gavril, JAURAS Maxime}
+ * \version 0.1
+ * \date 15 janvier 2023
+ */
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -11,6 +19,10 @@
 using namespace std;
 using namespace nsGraphics;
 
+/**
+ * \brief ConvertStringRGBAcolor : convertir un texte en une couleur
+ * \param[in] text
+ */
 RGBAcolor ConvertStringRGBAcolor(string & text)
 {
     if (text == "KBlack")
@@ -30,6 +42,10 @@ RGBAcolor ConvertStringRGBAcolor(string & text)
     return KBlack; // pas défaut
 }
 
+/**
+ * \brief LoadParams
+ * \param[out] Param
+ */
 void LoadParams (CMyParam & Param)
 {
     ifstream ifs("../prog8/autre fichier/config.yaml");
@@ -60,6 +76,11 @@ void LoadParams (CMyParam & Param)
     }
 }
 
+/**
+ * \brief InitParams
+ * \author {TAMARIN Maxime, ROUBAUD Axel, BOSSO Gavril, JAURAS Maxime, Alain Casali}
+ * \param[out] Param
+ */
 void InitParams (CMyParam & Param) /*Gavril prof correction*/
 {
 

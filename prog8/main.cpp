@@ -1,3 +1,11 @@
+/**
+ * \file main.cpp
+ * \brief Programme principal jeu pacman.
+ * \author {TAMARIN Maxime, ROUBAUD Axel, BOSSO Gavril, JAURAS Maxime}
+ * \version 0.1
+ * \date 15 janvier 2023
+ */
+
 #define FPS_LIMIT 60
 
 //bibliotheque c++
@@ -42,6 +50,10 @@ struct fantome
 
 //===============================| Map |============================
 
+/**
+* \brief matriceInitPacman
+* \param[out] matriceMap : matrice permettant la création de la map pour pacman
+*/
 void matriceInitPacman(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
     matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , 0 : chemin avec pièce, - : porte fantome, ' ' : chemin sans pièce
@@ -62,6 +74,10 @@ void matriceInitPacman(vector <vector <char>> & matriceMap) /*source: Maxime TAM
 
 }
 
+/**
+* \brief matriceInitFantome
+* \param[out] matriceMap : matrice permettant la création de la map pour les fantômes
+*/
 void matriceInitFantome(vector <vector <char>> & matriceMap) /*source: Maxime TAMARIN*/
 {
     matriceMap = {{'X','X','X','X','X','X','X','X','X','X','X','X','X','X','X',}, // X : mur , - : porte fantome, ' ' : chemin sans pièce
